@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>E-Voting Pemuda Desa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+    ::-webkit-scrollbar { display: none; }
+    label:active .card-body { transform: scale(0.97); }
+    input[type="radio"]:checked + .card-body .check-icon { opacity: 1; }
+    input[type="radio"]:checked + .card-body .check-circle { 
+      background-color: currentColor; 
+      border-color: currentColor; 
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased pb-24">
+
+  <header class="bg-indigo-600 text-white pt-14 pb-10 px-6 rounded-b-[2.5rem] shadow-lg shadow-indigo-600/20 relative overflow-hidden">
+    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="absolute bottom-0 -left-10 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+    <div class="relative z-10 text-center">
+      <h1 class="text-3xl font-black tracking-tight mb-1">E-Voting Pemuda</h1>
+      <p class="text-indigo-200 text-sm font-medium">Tentukan Masa Depan Desa Kita</p>
+    </div>
+  </header>
+
+  <main class="max-w-lg mx-auto mt-[-1.5rem] px-4 relative z-20" id="app">
+    
+    <form id="voteForm" class="space-y-6">
+      
+      <div class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex justify-center items-center font-bold text-sm">1</div>
+          <h2 class="text-lg font-bold text-slate-800">Pilih Calon Ketua</h2>
+        </div>
+        
+        <div class="space-y-3">
+          <label class="relative block cursor-pointer group">
+            <input type="radio" name="ketua" value="Kandidat A" class="peer hidden" required>
+            <div class="card-body text-indigo-600 bg-slate-50 border-2 border-transparent rounded-2xl p-4 transition-all duration-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:shadow-md flex items-center gap-4">
+              <img src="https://ui-avatars.com/api/?name=Kandidat+A&background=c7d2fe&color=3730a3&size=150" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm">
+              <div class="flex-1">
+                <h3 class="font-bold text-slate-800 text-base">Nama Calon Ketua A</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">"Mewujudkan pemuda desa yang melek teknologi."</p>
+              </div>
+              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex justify-center items-center transition-colors">
+                <svg class="check-icon w-3 h-3 text-white opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+            </div>
+          </label>
+
+          <label class="relative block cursor-pointer group">
+            <input type="radio" name="ketua" value="Kandidat B" class="peer hidden" required>
+            <div class="card-body text-indigo-600 bg-slate-50 border-2 border-transparent rounded-2xl p-4 transition-all duration-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:shadow-md flex items-center gap-4">
+              <img src="https://ui-avatars.com/api/?name=Kandidat+B&background=c7d2fe&color=3730a3&size=150" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm">
+              <div class="flex-1">
+                <h3 class="font-bold text-slate-800 text-base">Nama Calon Ketua B</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">"Solidaritas dan pemberdayaan ekonomi lokal."</p>
+              </div>
+              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex justify-center items-center transition-colors">
+                <svg class="check-icon w-3 h-3 text-white opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex justify-center items-center font-bold text-sm">2</div>
+          <h2 class="text-lg font-bold text-slate-800">Pilih Calon Wakil</h2>
+        </div>
+        
+        <div class="space-y-3">
+          <label class="relative block cursor-pointer group">
+            <input type="radio" name="wakil" value="Wakil A" class="peer hidden" required>
+            <div class="card-body text-emerald-500 bg-slate-50 border-2 border-transparent rounded-2xl p-4 transition-all duration-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:shadow-md flex items-center gap-4">
+              <img src="https://ui-avatars.com/api/?name=Wakil+A&background=a7f3d0&color=065f46&size=150" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm">
+              <div class="flex-1">
+                <h3 class="font-bold text-slate-800 text-base">Nama Calon Wakil A</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">"Pendampingan intensif sektor UMKM."</p>
+              </div>
+              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex justify-center items-center transition-colors">
+                <svg class="check-icon w-3 h-3 text-white opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+            </div>
+          </label>
+
+          <label class="relative block cursor-pointer group">
+            <input type="radio" name="wakil" value="Wakil B" class="peer hidden" required>
+            <div class="card-body text-emerald-500 bg-slate-50 border-2 border-transparent rounded-2xl p-4 transition-all duration-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:shadow-md flex items-center gap-4">
+              <img src="https://ui-avatars.com/api/?name=Wakil+B&background=a7f3d0&color=065f46&size=150" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm">
+              <div class="flex-1">
+                <h3 class="font-bold text-slate-800 text-base">Nama Calon Wakil B</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">"Memajukan kegiatan olahraga & kesenian."</p>
+              </div>
+              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex justify-center items-center transition-colors">
+                <svg class="check-icon w-3 h-3 text-white opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white font-bold text-lg py-4 rounded-full shadow-lg shadow-indigo-600/30 hover:bg-indigo-700 active:scale-[0.98] transition-all flex justify-center items-center gap-2 mt-4">
+        <span>Kirim Suara Rahasia Saya</span>
+      </button>
+    </form>
+
+
+    <div id="votedMsg" class="hidden">
+      <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 text-center">
+        <div class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+        </div>
+        <h2 class="text-2xl font-black text-slate-800 mb-2">Terima Kasih!</h2>
+        <p class="text-slate-500 text-sm leading-relaxed mb-6">Pilihan Anda telah tersimpan secara rahasia. <br>Silakan isi daftar hadir di bawah ini untuk melihat hasil <i>Live Chart</i> sementara.</p>
+
+        <form id="namaForm" class="text-left bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-inner">
+          <label class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Pendataan Kehadiran</label>
+          <input type="text" id="inputNama" required placeholder="Ketik nama lengkap Anda..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-slate-700 mb-4 outline-none">
+          <button type="submit" id="btnNama" class="w-full bg-slate-800 text-white font-bold py-3 rounded-xl hover:bg-slate-900 transition-all">Hadir & Lihat Hasil Voting</button>
+        </form>
+
+        <div id="liveChartContainer" class="hidden mt-8 text-left">
+          <h3 class="text-center font-black text-lg text-slate-800 mb-4 border-b border-slate-100 pb-3">📊 Live Count Sementara</h3>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+              <p class="text-[10px] font-bold text-center text-slate-500 mb-2 tracking-widest">CALON KETUA</p>
+              <canvas id="chartKetuaUI"></canvas>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+              <p class="text-[10px] font-bold text-center text-slate-500 mb-2 tracking-widest">CALON WAKIL</p>
+              <canvas id="chartWakilUI"></canvas>
+            </div>
+          </div>
+          <button onclick="location.reload()" class="mt-6 w-full text-xs font-bold text-indigo-600 bg-indigo-50 py-3 rounded-full hover:bg-indigo-100">🔄 Segarkan Data Grafik</button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // PASTIKAN ANDA MENGGANTI TEKS DI BAWAH INI DENGAN URL APPS SCRIPT ANDA!!!
+    // =========================================================================
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzm245D7fytSmXEDlnSuNqybCaYf5soOp8tSo9Ks-Su-eeXyIS1CFHF4fVDM79YlmMorA/exec'; 
+    // Contoh: const API_URL = 'https://script.google.com/macros/s/AKfycbxyz.../exec';
+
+    const formVoting = document.getElementById('voteForm');
+    const votedMsg = document.getElementById('votedMsg');
+    const namaForm = document.getElementById('namaForm');
+    const chartContainer = document.getElementById('liveChartContainer');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if(localStorage.getItem('evoting_desa_2026')) {
+        formVoting.classList.add('hidden');
+        votedMsg.classList.remove('hidden');
+        
+        if(localStorage.getItem('evoting_nama_2026')) {
+          namaForm.classList.add('hidden');
+          chartContainer.classList.remove('hidden');
+          loadCharts(); 
+        }
+      }
+    });
+
+    formVoting.onsubmit = function(e) {
+      e.preventDefault();
+      
+      const payload = {
+        ketua: formVoting.ketua.value,
+        wakil: formVoting.wakil.value
+      };
+
+      // Kunci Local Storage Secara Instan
+      localStorage.setItem('evoting_desa_2026', 'true');
+
+      // Mengirim data ke API Apps Script di Latar Belakang (Fetch API)
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ type: 'vote', payload: payload })
+      });
+
+      // Tampilkan Sukses Instan (Optimistic UI)
+      Swal.fire({
+        title: 'Berhasil!',
+        text: 'Suara rahasia Anda telah masuk ke kotak suara digital.',
+        icon: 'success',
+        confirmButtonColor: '#4f46e5',
+        confirmButtonText: 'Lanjut',
+        customClass: { popup: 'rounded-3xl' } 
+      }).then(() => {
+        formVoting.classList.add('hidden');
+        votedMsg.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    };
+
+    namaForm.onsubmit = function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnNama');
+      const nama = document.getElementById('inputNama').value;
+      
+      btn.disabled = true;
+      btn.innerHTML = "Mencatat...";
+
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ type: 'absen', nama: nama })
+      }).then(() => {
+        localStorage.setItem('evoting_nama_2026', 'true');
+        namaForm.classList.add('hidden');
+        chartContainer.classList.remove('hidden');
+        loadCharts();
+      });
+    };
+
+    function loadCharts() {
+      fetch(API_URL + '?action=getCharts')
+        .then(response => response.json())
+        .then(data => {
+          const colors1 = ['#4f46e5', '#818cf8', '#c7d2fe']; 
+          const colors2 = ['#10b981', '#34d399', '#a7f3d0']; 
+
+          new Chart(document.getElementById('chartKetuaUI'), {
+            type: 'doughnut',
+            data: { labels: data.labelsKetua, datasets: [{ data: data.dataKetua, backgroundColor: colors1, borderWidth: 0 }] },
+            options: { plugins: { legend: { display: false } }, cutout: '70%' } 
+          });
+
+          new Chart(document.getElementById('chartWakilUI'), {
+            type: 'doughnut',
+            data: { labels: data.labelsWakil, datasets: [{ data: data.dataWakil, backgroundColor: colors2, borderWidth: 0 }] },
+            options: { plugins: { legend: { display: false } }, cutout: '70%' }
+          });
+        });
+    }
+  </script>
+</body>
+</html>
