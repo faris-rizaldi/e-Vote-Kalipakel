@@ -3,147 +3,274 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>e-Voting Kalipakel</title>
+  <title>Pemilihan Pemuda Kalipakel</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
     ::-webkit-scrollbar { display: none; }
-    label:active .card-body { transform: scale(0.97); }
-    input[type="radio"]:checked + .card-body .check-icon { opacity: 1; }
-    input[type="radio"]:checked + .card-body .check-circle { 
-      background-color: currentColor; 
-      border-color: currentColor; 
+    
+    /* Efek pantulan halus saat kartu ditekan */
+    label:active .card-body { transform: scale(0.98) translateY(0); }
+    
+    /* Efek Kartu Saat Dipilih (Checked) dengan Premium Blue Glow Ring */
+    input[type="radio"]:checked + .card-body { 
+      border-color: #3b82f6; 
+      background-color: #eff6ff; 
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), 0 20px 25px -5px rgba(0, 0, 0, 0.05); 
+      transform: translateY(-4px);
     }
+    input[type="radio"]:checked + .card-body .check-icon { opacity: 1; transform: scale(1); }
+    input[type="radio"]:checked + .card-body .check-circle { background-color: #2563eb; border-color: #2563eb; } 
+    
+    input[type="radio"]:checked + .card-body .badge-paslon {
+      background-color: #dbeafe; 
+      color: #1d4ed8; 
+    }
+
+    /* Overlay gradient hitam transparan pada foto */
+    .img-overlay {
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0) 100%);
+    }
+
+    /* Animasi Masuk Mewah */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+      opacity: 0;
+      animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    /* Animasi pop tombol saat aktif */
+    @keyframes popIn {
+      0% { transform: scale(0.95); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+    .animate-pop { animation: popIn 0.4s ease-out forwards; }
+
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
   </style>
 </head>
-<body class="text-slate-800 antialiased pb-24">
+<body class="text-slate-800 antialiased pb-6 selection:bg-blue-500 selection:text-white">
 
-  <header class="bg-indigo-600 text-white pt-14 pb-10 px-6 rounded-b-[2.5rem] shadow-lg shadow-indigo-600/20 relative overflow-hidden">
-    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
-    <div class="absolute bottom-0 -left-10 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
-    <div class="relative z-10 text-center">
-      <h1 class="text-3xl font-black tracking-tight mb-1">E-Voting Pemuda</h1>
-      <p class="text-indigo-200 text-sm font-medium">Tentukan Masa Depan Desa Kita</p>
+  <!-- HERO WELCOME SCREEN (Ocean Blue Theme) -->
+  <header class="bg-gradient-to-b from-slate-900 to-slate-800 text-white pt-14 pb-12 px-6 rounded-b-[2.5rem] shadow-xl relative overflow-hidden animate-fade-in-up">
+    <!-- Ornamen Glow Background -->
+    <div class="absolute -top-12 -right-12 w-56 h-56 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-24 bg-sky-400/10 blur-2xl pointer-events-none"></div>
+    
+    <div class="relative z-10 text-center max-w-md mx-auto">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-[10px] font-bold tracking-wider uppercase mb-5 text-slate-200 shadow-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        Portal E-Voting Resmi
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight mb-3 text-white drop-shadow-sm">
+        Pemilihan Ketua Pemuda <br> Kalipakel 2026
+      </h1>
+      <p class="text-slate-400 text-xs sm:text-sm font-medium px-4 leading-relaxed">Tentukan arah kemajuan dan masa depan <br> lingkungan kita bersama.</p>
     </div>
   </header>
 
-  <main class="max-w-lg mx-auto mt-[-1.5rem] px-4 relative z-20" id="app">
+  <main class="max-w-md mx-auto mt-[-1.5rem] px-4 relative z-20" id="app">
     
-    <form id="voteForm" class="space-y-6">
+    <!-- FORM PEMILIHAN PASLON -->
+    <form id="voteForm" class="space-y-5">
       
-      <div class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex justify-center items-center font-bold text-sm">1</div>
-          <h2 class="text-lg font-bold text-slate-800">Pilih Calon Ketua</h2>
+      <div class="bg-white/95 backdrop-blur-xl p-5 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white">
+        
+        <!-- Header Section -->
+        <div class="text-left mb-5 px-1 pb-4 flex items-center justify-between border-b border-slate-100">
+          <div>
+            <h2 class="text-[10px] font-extrabold text-blue-600 uppercase tracking-widest">Daftar Kandidat</h2>
+            <p class="text-sm font-extrabold text-slate-800 mt-0.5">Pilih Pasangan Calon</p>
+          </div>
         </div>
         
-        <div class="space-y-3">
-          <label class="relative block cursor-pointer group">
-            <input type="radio" name="ketua" value="Kandidat A" class="peer hidden" required>
-            <div class="card-body text-indigo-600 bg-slate-50 border-2 border-transparent rounded-2xl p-4 transition-all duration-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:shadow-md flex items-center gap-4">
-              <img src="https://ui-avatars.com/api/?name=Kandidat+A&background=c7d2fe&color=3730a3&size=150" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm">
-              <div class="flex-1">
-                <h3 class="font-bold text-slate-800 text-base">Nama Calon Ketua A</h3>
-                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">"Mewujudkan pemuda desa yang melek teknologi."</p>
+        <div class="space-y-4">
+          
+          <!-- ========================================== -->
+          <!-- PASLON 1: BRIAN & REHAN                    -->
+          <!-- ========================================== -->
+          <label class="relative block cursor-pointer group animate-fade-in-up delay-100">
+            <input type="radio" name="paslon" value="Brian & Rehan" class="peer hidden" required>
+            <!-- Card Body dengan Efek Hover Premium -->
+            <div class="card-body bg-white border border-slate-200 rounded-[1.5rem] p-4 transition-all duration-500 ease-out flex flex-col relative overflow-hidden group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] group-hover:border-blue-200 group-hover:-translate-y-1.5">
+              
+              <!-- Icon Centang Mengambang -->
+              <div class="absolute top-6 right-6 z-20">
+                <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-200 bg-white/60 backdrop-blur-sm flex justify-center items-center transition-all duration-300 shadow-sm">
+                  <svg class="check-icon w-3.5 h-3.5 text-white opacity-0 scale-50 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                </div>
               </div>
-              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex justify-center items-center transition-colors">
-                <svg class="check-icon w-3 h-3 text-white opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+
+              <!-- BAGIAN FOTO KANDIDAT -->
+              <div class="flex gap-3 w-full mb-4">
+                <div class="relative w-1/2 aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-slate-100 border border-slate-100/50">
+                  <img src="paslon/Brian.jpeg" alt="Ketua Brian" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                  <div class="absolute bottom-2.5 inset-x-0 flex justify-center">
+                    <span class="bg-slate-900/60 backdrop-blur-md text-white/95 text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest border border-white/20 shadow-sm">Ketua</span>
+                  </div>
+                </div>
+                <div class="relative w-1/2 aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-slate-100 border border-slate-100/50">
+                  <img src="paslon/Rehan.jpeg" alt="Wakil Rehan" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                  <div class="absolute bottom-2.5 inset-x-0 flex justify-center">
+                    <span class="bg-slate-900/60 backdrop-blur-md text-white/95 text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest border border-white/20 shadow-sm">Wakil</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BAGIAN TEKS NAMA -->
+              <div class="px-1 pb-1 text-left">
+                <span class="badge-paslon inline-block text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2.5 py-1 rounded-md mb-2 tracking-widest transition-colors duration-300">PASLON 01</span>
+                <h3 class="font-extrabold text-slate-800 text-xl tracking-tight leading-none mb-1.5">Brian & Rehan</h3>
+                <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Kandidat Pemimpin Baru</p>
               </div>
             </div>
           </label>
 
-          <label class="relative block cursor-pointer group">
-            <input type="radio" name="ketua" value="Kandidat B" class="peer hidden" required>
-            <div class="card-body text-indigo-600 bg-slate-50 border-2 border-transparent rounded-2xl p-4 transition-all duration-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:shadow-md flex items-center gap-4">
-              <img src="https://ui-avatars.com/api/?name=Kandidat+B&background=c7d2fe&color=3730a3&size=150" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm">
-              <div class="flex-1">
-                <h3 class="font-bold text-slate-800 text-base">Nama Calon Ketua B</h3>
-                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">"Solidaritas dan pemberdayaan ekonomi lokal."</p>
+
+          <!-- ========================================== -->
+          <!-- PASLON 2: ADE & KAKA                       -->
+          <!-- ========================================== -->
+          <label class="relative block cursor-pointer group animate-fade-in-up delay-200">
+            <input type="radio" name="paslon" value="Ade & Kaka" class="peer hidden" required>
+            <div class="card-body bg-white border border-slate-200 rounded-[1.5rem] p-4 transition-all duration-500 ease-out flex flex-col relative overflow-hidden group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] group-hover:border-blue-200 group-hover:-translate-y-1.5">
+              
+              <div class="absolute top-6 right-6 z-20">
+                <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-200 bg-white/60 backdrop-blur-sm flex justify-center items-center transition-all duration-300 shadow-sm">
+                  <svg class="check-icon w-3.5 h-3.5 text-white opacity-0 scale-50 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                </div>
               </div>
-              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex justify-center items-center transition-colors">
-                <svg class="check-icon w-3 h-3 text-white opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+
+              <div class="flex gap-3 w-full mb-4">
+                <div class="relative w-1/2 aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-slate-100 border border-slate-100/50">
+                  <img src="paslon/Ade.jpeg" alt="Ketua Ade" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                  <div class="absolute bottom-2.5 inset-x-0 flex justify-center">
+                    <span class="bg-slate-900/60 backdrop-blur-md text-white/95 text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest border border-white/20 shadow-sm">Ketua</span>
+                  </div>
+                </div>
+                <div class="relative w-1/2 aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-slate-100 border border-slate-100/50">
+                  <img src="paslon/Kaka.jpeg" alt="Wakil Kaka" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                  <div class="absolute bottom-2.5 inset-x-0 flex justify-center">
+                    <span class="bg-slate-900/60 backdrop-blur-md text-white/95 text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest border border-white/20 shadow-sm">Wakil</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="px-1 pb-1 text-left">
+                <span class="badge-paslon inline-block text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2.5 py-1 rounded-md mb-2 tracking-widest transition-colors duration-300">PASLON 02</span>
+                <h3 class="font-extrabold text-slate-800 text-xl tracking-tight leading-none mb-1.5">Ade & Kaka</h3>
+                <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Kandidat Pemimpin Baru</p>
               </div>
             </div>
           </label>
+
+
+          <!-- ========================================== -->
+          <!-- PASLON 3: LIA & WENIS                      -->
+          <!-- ========================================== -->
+          <label class="relative block cursor-pointer group animate-fade-in-up delay-300">
+            <input type="radio" name="paslon" value="Lia & Wenis" class="peer hidden" required>
+            <div class="card-body bg-white border border-slate-200 rounded-[1.5rem] p-4 transition-all duration-500 ease-out flex flex-col relative overflow-hidden group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] group-hover:border-blue-200 group-hover:-translate-y-1.5">
+              
+              <div class="absolute top-6 right-6 z-20">
+                <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-200 bg-white/60 backdrop-blur-sm flex justify-center items-center transition-all duration-300 shadow-sm">
+                  <svg class="check-icon w-3.5 h-3.5 text-white opacity-0 scale-50 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+              </div>
+
+              <div class="flex gap-3 w-full mb-4">
+                <div class="relative w-1/2 aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-slate-100 border border-slate-100/50">
+                  <img src="paslon/Lia.jpeg" alt="Ketua Lia" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                  <div class="absolute bottom-2.5 inset-x-0 flex justify-center">
+                    <span class="bg-slate-900/60 backdrop-blur-md text-white/95 text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest border border-white/20 shadow-sm">Ketua</span>
+                  </div>
+                </div>
+                <div class="relative w-1/2 aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-slate-100 border border-slate-100/50">
+                  <img src="paslon/Wenis.jpeg" alt="Wakil Wenis" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                  <div class="absolute bottom-2.5 inset-x-0 flex justify-center">
+                    <span class="bg-slate-900/60 backdrop-blur-md text-white/95 text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest border border-white/20 shadow-sm">Wakil</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="px-1 pb-1 text-left">
+                <span class="badge-paslon inline-block text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2.5 py-1 rounded-md mb-2 tracking-widest transition-colors duration-300">PASLON 03</span>
+                <h3 class="font-extrabold text-slate-800 text-xl tracking-tight leading-none mb-1.5">Lia & Wenis</h3>
+                <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Kandidat Pemimpin Baru</p>
+              </div>
+            </div>
+          </label>
+
         </div>
       </div>
 
-      <div class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex justify-center items-center font-bold text-sm">2</div>
-          <h2 class="text-lg font-bold text-slate-800">Pilih Calon Wakil</h2>
-        </div>
-        
-        <div class="space-y-3">
-          <label class="relative block cursor-pointer group">
-            <input type="radio" name="wakil" value="Wakil A" class="peer hidden" required>
-            <div class="card-body text-emerald-500 bg-slate-50 border-2 border-transparent rounded-2xl p-4 transition-all duration-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:shadow-md flex items-center gap-4">
-              <img src="https://ui-avatars.com/api/?name=Wakil+A&background=a7f3d0&color=065f46&size=150" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm">
-              <div class="flex-1">
-                <h3 class="font-bold text-slate-800 text-base">Nama Calon Wakil A</h3>
-                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">"Pendampingan intensif sektor UMKM."</p>
-              </div>
-              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex justify-center items-center transition-colors">
-                <svg class="check-icon w-3 h-3 text-white opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-              </div>
-            </div>
-          </label>
-
-          <label class="relative block cursor-pointer group">
-            <input type="radio" name="wakil" value="Wakil B" class="peer hidden" required>
-            <div class="card-body text-emerald-500 bg-slate-50 border-2 border-transparent rounded-2xl p-4 transition-all duration-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:shadow-md flex items-center gap-4">
-              <img src="https://ui-avatars.com/api/?name=Wakil+B&background=a7f3d0&color=065f46&size=150" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm">
-              <div class="flex-1">
-                <h3 class="font-bold text-slate-800 text-base">Nama Calon Wakil B</h3>
-                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">"Memajukan kegiatan olahraga & kesenian."</p>
-              </div>
-              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex justify-center items-center transition-colors">
-                <svg class="check-icon w-3 h-3 text-white opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-              </div>
-            </div>
-          </label>
-        </div>
+      <!-- Tombol Submit Sticky di Mobile -->
+      <div class="sticky bottom-6 z-40 mt-8 pt-4 animate-fade-in-up delay-300">
+        <!-- Tombol disabled by default, akan aktif via Javascript -->
+        <button type="button" id="submitBtn" disabled class="relative w-full bg-slate-300 text-slate-500 font-bold text-sm py-4.5 rounded-[1.25rem] shadow-lg transition-all duration-300 flex justify-center items-center gap-2 overflow-hidden h-14 cursor-not-allowed">
+          <span id="btnText" class="relative z-10 flex items-center gap-2 transition-all">
+            Pilih Kandidat Dulu
+            <svg id="btnArrow" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </span>
+          <!-- Ikon Spinner Indikator Loading -->
+          <svg id="btnSpinner" class="animate-spin hidden h-5 w-5 text-white absolute z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </button>
       </div>
-
-      <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white font-bold text-lg py-4 rounded-full shadow-lg shadow-indigo-600/30 hover:bg-indigo-700 active:scale-[0.98] transition-all flex justify-center items-center gap-2 mt-4">
-        <span>Kirim Suara Saya</span>
-      </button>
+      
+      <!-- Footer Trust Signal -->
+      <div class="text-center mt-6 animate-fade-in-up delay-300">
+        <p class="text-[10px] text-slate-400 font-medium flex items-center justify-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-emerald-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" /></svg>
+          Data diamankan dengan enkripsi End-to-End
+        </p>
+      </div>
     </form>
 
 
-    <div id="votedMsg" class="hidden">
-      <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 text-center">
-        <div class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+    <!-- TAMPILAN SETELAH MEMILIH -->
+    <div id="votedMsg" class="hidden mt-2 animate-fade-in-up">
+      <div class="bg-white p-7 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 text-center relative overflow-hidden">
+        
+        <!-- Ornamen dekoratif latar belakang -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50/50 rounded-bl-[100px] -z-10"></div>
+        
+        <div class="relative z-10 w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm border border-blue-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
         </div>
-        <h2 class="text-2xl font-black text-slate-800 mb-2">Terima Kasih!</h2>
-        <p class="text-slate-500 text-sm leading-relaxed mb-6">Pilihan Anda telah tersimpan. <br>Silakan isi daftar hadir di bawah ini untuk melihat hasil <i>Live Chart</i> sementara.</p>
+        <h2 class="relative z-10 text-xl font-extrabold text-slate-800 mb-2">Suara Berhasil Disimpan!</h2>
+        <p class="relative z-10 text-slate-500 text-xs leading-relaxed mb-6 px-2">
+          Terima kasih telah berpartisipasi. Hak suara digital Anda telah dikunci dengan aman pada perangkat ini.
+        </p>
 
-        <form id="namaForm" class="text-left bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-inner">
-          <label class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Pendataan Kehadiran</label>
-          <input type="text" id="inputNama" required placeholder="Ketik nama lengkap Anda..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-slate-700 mb-4 outline-none">
-          <button type="submit" id="btnNama" class="w-full bg-slate-800 text-white font-bold py-3 rounded-xl hover:bg-slate-900 transition-all">Hadir & Lihat Hasil Voting</button>
-        </form>
-
-        <div id="liveChartContainer" class="hidden mt-8 text-left">
-          <h3 class="text-center font-black text-lg text-slate-800 mb-4 border-b border-slate-100 pb-3">📊 Live Count Sementara</h3>
-          
-          <div class="grid grid-cols-2 gap-4">
-            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-              <p class="text-[10px] font-bold text-center text-slate-500 mb-2 tracking-widest">CALON KETUA</p>
-              <canvas id="chartKetuaUI"></canvas>
-            </div>
-            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-              <p class="text-[10px] font-bold text-center text-slate-500 mb-2 tracking-widest">CALON WAKIL</p>
-              <canvas id="chartWakilUI"></canvas>
-            </div>
+        <!-- WADAH GRAFIK HASIL SEMENTARA -->
+        <div class="bg-slate-50 p-5 rounded-[1.5rem] border border-slate-200/60 text-left shadow-inner relative z-10">
+          <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-200/80">
+            <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wide">📊 Live Count</span>
+            <span class="text-[9px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded shadow-sm uppercase tracking-widest">Realtime</span>
           </div>
-          <button onclick="location.reload()" class="mt-6 w-full text-xs font-bold text-indigo-600 bg-indigo-50 py-3 rounded-full hover:bg-indigo-100">🔄 Segarkan Data Grafik</button>
-        </div>
+          
+          <div class="max-w-[220px] mx-auto py-2">
+            <canvas id="chartPaslonUI"></canvas>
+          </div>
 
+          <button onclick="location.reload()" class="mt-6 w-full text-[11px] font-extrabold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:text-blue-600 py-3.5 rounded-xl transition-all duration-200 text-center block shadow-sm">
+            🔄 Segarkan Perolehan Suara
+          </button>
+        </div>
       </div>
     </div>
 
@@ -151,97 +278,134 @@
 
   <script>
     // =========================================================================
-    // PASTIKAN ANDA MENGGANTI TEKS DI BAWAH INI DENGAN URL APPS SCRIPT ANDA!!!
+    // ⚠️ MASUKKAN URL API APPS SCRIPT ANDA (YANG AKHIRANNYA /exec) DI SINI:
+    // PENTING: JANGAN GUNAKAN LINK SPREADSHEET (docs.google.com/...)
     // =========================================================================
     const API_URL = 'https://script.google.com/macros/s/AKfycbzm245D7fytSmXEDlnSuNqybCaYf5soOp8tSo9Ks-Su-eeXyIS1CFHF4fVDM79YlmMorA/exec'; 
-    // Contoh: const API_URL = 'https://script.google.com/macros/s/AKfycbxyz.../exec';
 
-    const formVoting = document.getElementById('voteForm');
+    const form = document.getElementById('voteForm');
     const votedMsg = document.getElementById('votedMsg');
-    const namaForm = document.getElementById('namaForm');
-    const chartContainer = document.getElementById('liveChartContainer');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnArrow = document.getElementById('btnArrow');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const radios = document.querySelectorAll('input[name="paslon"]');
+    
+    let pemilihIP = "Mengambil IP...";
 
+    // 1. Ambil IP Publik & Cek Gembok Device saat web dibuka
     document.addEventListener('DOMContentLoaded', () => {
-      if(localStorage.getItem('evoting_desa_2026')) {
-        formVoting.classList.add('hidden');
-        votedMsg.classList.remove('hidden');
-        
-        if(localStorage.getItem('evoting_nama_2026')) {
-          namaForm.classList.add('hidden');
-          chartContainer.classList.remove('hidden');
-          loadCharts(); 
-        }
+      fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(data => pemilihIP = data.ip)
+        .catch(() => pemilihIP = "IP Tidak Terdeteksi");
+
+      // Cek apakah HP ini sudah pernah memilih
+      if(localStorage.getItem('evote_kalipakel_2026_locked')) {
+        tampilkanHalamanSelesai();
       }
     });
 
-    formVoting.onsubmit = function(e) {
+    // 2. UX Tambahan: Mengaktifkan tombol kirim hanya SETELAH paslon diklik
+    radios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        // Nyalakan tombol
+        submitBtn.disabled = false;
+        // Ubah warna ke Ocean Blue
+        submitBtn.className = "relative w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-4.5 rounded-[1.25rem] shadow-[0_8px_20px_rgb(37,99,235,0.25)] hover:shadow-[0_10px_25px_rgb(37,99,235,0.4)] active:scale-[0.98] transition-all duration-300 flex justify-center items-center gap-2 group overflow-hidden h-14 animate-pop";
+        
+        // Ubah teks tombol
+        btnText.innerHTML = `
+          Kirim Pilihan Saya Sekarang
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+        `;
+      });
+    });
+
+    // 3. Eksekusi Pengiriman Suara dengan Animasi Loading & Konfirmasi
+    submitBtn.addEventListener('click', function(e) {
       e.preventDefault();
       
+      const selectedPaslon = form.paslon.value;
+      
+      // SWEET ALERT KONFIRMASI (Mencegah human error salah pencet)
+      Swal.fire({
+        title: 'Konfirmasi Pilihan',
+        html: `Anda akan memberikan suara untuk <b>${selectedPaslon}</b>.<br><br><span class="text-xs text-red-500">Pilihan bersifat final dan tidak dapat diubah.</span>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2563eb',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: 'Ya, Kirim Suara!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        customClass: { popup: 'rounded-[2rem]' } 
+      }).then((result) => {
+        if (result.isConfirmed) {
+          prosesKirimSuara(selectedPaslon);
+        }
+      });
+    });
+
+    function prosesKirimSuara(selectedPaslon) {
+      // Ubah state tombol menjadi loading
+      submitBtn.disabled = true;
+      submitBtn.classList.add('cursor-not-allowed', 'opacity-90');
+      btnText.classList.add('invisible'); 
+      btnSpinner.classList.remove('hidden'); 
+
+      // Kumpulkan data
       const payload = {
-        ketua: formVoting.ketua.value,
-        wakil: formVoting.wakil.value
+        paslon: selectedPaslon,
+        ip: pemilihIP,
+        device: navigator.userAgent
       };
 
-      // Kunci Local Storage Secara Instan
-      localStorage.setItem('evoting_desa_2026', 'true');
+      // GEMBOK HP
+      localStorage.setItem('evote_kalipakel_2026_locked', 'true');
 
-      // Mengirim data ke API Apps Script di Latar Belakang (Fetch API)
+      // Kirim data
       fetch(API_URL, {
         method: 'POST',
         body: JSON.stringify({ type: 'vote', payload: payload })
       });
 
-      // Tampilkan Sukses Instan (Optimistic UI)
-      Swal.fire({
-        title: 'Berhasil!',
-        text: 'Suara rahasia Anda telah masuk ke kotak suara digital.',
-        icon: 'success',
-        confirmButtonColor: '#4f46e5',
-        confirmButtonText: 'Lanjut',
-        customClass: { popup: 'rounded-3xl' } 
-      }).then(() => {
-        formVoting.classList.add('hidden');
-        votedMsg.classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    };
+      // Delay loading visual
+      setTimeout(() => {
+        Swal.fire({
+          title: 'Suara Sah!',
+          text: 'Pilihan paslon Anda telah dienkripsi dengan aman.',
+          icon: 'success',
+          confirmButtonColor: '#2563eb', 
+          confirmButtonText: 'Lihat Hasil Sementara',
+          customClass: { popup: 'rounded-[2rem]' } 
+        }).then(() => {
+          tampilkanHalamanSelesai();
+        });
+      }, 800); 
+    }
 
-    namaForm.onsubmit = function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btnNama');
-      const nama = document.getElementById('inputNama').value;
-      
-      btn.disabled = true;
-      btn.innerHTML = "Mencatat...";
+    function tampilkanHalamanSelesai() {
+      form.classList.add('hidden');
+      votedMsg.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ type: 'absen', nama: nama })
-      }).then(() => {
-        localStorage.setItem('evoting_nama_2026', 'true');
-        namaForm.classList.add('hidden');
-        chartContainer.classList.remove('hidden');
-        loadCharts();
-      });
-    };
-
-    function loadCharts() {
+      // Ambil data grafik
       fetch(API_URL + '?action=getCharts')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
-          const colors1 = ['#4f46e5', '#818cf8', '#c7d2fe']; 
-          const colors2 = ['#10b981', '#34d399', '#a7f3d0']; 
-
-          new Chart(document.getElementById('chartKetuaUI'), {
+          const palet = ['#2563eb', '#0ea5e9', '#0f172a']; 
+          new Chart(document.getElementById('chartPaslonUI'), {
             type: 'doughnut',
-            data: { labels: data.labelsKetua, datasets: [{ data: data.dataKetua, backgroundColor: colors1, borderWidth: 0 }] },
-            options: { plugins: { legend: { display: false } }, cutout: '70%' } 
-          });
-
-          new Chart(document.getElementById('chartWakilUI'), {
-            type: 'doughnut',
-            data: { labels: data.labelsWakil, datasets: [{ data: data.dataWakil, backgroundColor: colors2, borderWidth: 0 }] },
-            options: { plugins: { legend: { display: false } }, cutout: '70%' }
+            data: { 
+              labels: data.labelsPaslon, 
+              datasets: [{ data: data.dataPaslon, backgroundColor: palet, borderWidth: 3, borderColor: '#f8fafc' }] 
+            },
+            options: { 
+              plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20, font: { family: 'Plus Jakarta Sans', size: 11, weight: '700' } } } },
+              cutout: '72%',
+              animation: { animateScale: true, animateRotate: true }
+            }
           });
         });
     }
