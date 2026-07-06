@@ -389,7 +389,7 @@
       }, 800); 
     }
 
-    function tampilkanHalamanSelesai() {
+function tampilkanHalamanSelesai() {
       form.classList.add('hidden');
       votedMsg.classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -401,14 +401,14 @@
           // LOGIKA BARU: Palet Warna Sesuai Background Foto (Biru, Kuning, Merah)
           const palet = ['#2563eb', '#eab308', '#dc2626']; 
           
-          // Mengubah Nama Label menjadi Pendek (Paslon 01, 02, 03) agar muat di sumbu bawah
-          const labelPendek = data.labelsPaslon.map((label, index) => `Paslon 0${index + 1}`);
+          // Memecah nama menjadi 2 baris (Array) agar tidak bertabrakan di layar HP
+          const labelNamaRapi = data.labelsPaslon.map(label => label.split(" & "));
 
           // MENGGUNAKAN GRAFIK BATANG VERTIKAL (PODIUM)
           new Chart(document.getElementById('chartPaslonUI'), {
             type: 'bar', // Secara default adalah vertikal
             data: { 
-              labels: labelPendek, // Menggunakan label pendek
+              labels: labelNamaRapi, // Menggunakan nama asli 2 baris
               datasets: [{ 
                 data: data.dataPaslon, 
                 backgroundColor: palet,
